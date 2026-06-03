@@ -42,6 +42,12 @@ find_package(Eigen3 REQUIRED)
 
 find_package(std_msgs REQUIRED)
 
+find_package(rclcpp REQUIRED)
+
+find_package(rosgraph_msgs REQUIRED)
+
+find_package(sensor_msgs REQUIRED)
+
 find_package(gz-msgs9 REQUIRED)
 
 find_package(gz-fuel_tools8 REQUIRED)
@@ -171,6 +177,20 @@ foreach(PLUGIN IN LISTS SOLAR_BOAT_WS_PLUGINS)
   )
 endforeach()
 
+add_executable(garden_bridge
+  src/garden_bridge.cpp
+)
+target_link_libraries(garden_bridge
+  gz-transport${GZ_TRANSPORT_VER}::gz-transport${GZ_TRANSPORT_VER}
+  gz-msgs9::gz-msgs9
+)
+ament_target_dependencies(garden_bridge
+  rclcpp
+  rosgraph_msgs
+  sensor_msgs
+  std_msgs
+)
+
 # --------------------------------------------------
 # Installation Settings
 # --------------------------------------------------
@@ -185,6 +205,11 @@ install(TARGETS
   AcousticTrackingScoringPlugin
   ${SOLAR_BOAT_WS_PLUGINS}
   DESTINATION lib
+)
+
+install(TARGETS
+  garden_bridge
+  DESTINATION lib/${PROJECT_NAME}
 )
 
 install(DIRECTORY

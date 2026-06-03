@@ -43,7 +43,7 @@ def generate_launch_description():
         ),
 
         ExecuteProcess(
-            cmd=['gz', 'sim', world_path],
+            cmd=['gz', 'sim', '-r', world_path],
             output='screen'
         ),
 
@@ -69,44 +69,12 @@ def generate_launch_description():
         ),
 
         Node(
-            package='ros_gz_sim',
-            executable='create',
-            name='spawn_roboboat',
-            arguments=[
-                '-topic', 'robot_description',
-                '-name', 'roboboat',
-                '-x', '0', '-y', '0', '-z', '0'
+            package=package_name,
+            executable='garden_bridge',
+            name='garden_bridge',
+            parameters=[
+                {'use_sim_time': True}
             ],
-            parameters=[{'use_sim_time': True}],
-            output='screen'
-        ),
-
-        Node(
-            package='ros_gz_bridge',
-            executable='parameter_bridge',
-            arguments=[
-                "/world/default/clock@rosgraph_msgs/msg/Clock@gz.msgs.Clock",
-                "/model/roboboat/joint/left_housing_link_to_left_prop_link/cmd_thrust@std_msgs/msg/Float64@gz.msgs.Double",
-                "/model/roboboat/joint/right_housing_link_to_right_prop_link/cmd_thrust@std_msgs/msg/Float64@gz.msgs.Double",
-                "/world/default/model/roboboat/link/base_link/sensor/sensor_gps/navsat@sensor_msgs/msg/NavSatFix@gz.msgs.NavSat",
-                "/world/default/model/roboboat/link/base_link/sensor/sensor_imu/imu@sensor_msgs/msg/Imu@gz.msgs.IMU",
-                "/world/default/model/roboboat/link/base_link/sensor/sensor_lidar/scan@sensor_msgs/msg/LaserScan@gz.msgs.LaserScan",
-                "/world/default/model/roboboat/link/base_link/sensor/sensor_lidar/scan/points@sensor_msgs/msg/PointCloud2@gz.msgs.PointCloudPacked",
-                "/world/default/model/roboboat/link/base_link/sensor/sensor_camera/camera_info@sensor_msgs/msg/CameraInfo@gz.msgs.CameraInfo",
-                "/world/default/model/roboboat/link/base_link/sensor/sensor_camera/image@sensor_msgs/msg/Image@gz.msgs.Image",
-            ],
-            remappings=[
-                ("/world/default/clock", "/clock"),
-                ("/model/roboboat/joint/left_housing_link_to_left_prop_link/cmd_thrust", "/roboboat/thrusters/left/thrust"),
-                ("/model/roboboat/joint/right_housing_link_to_right_prop_link/cmd_thrust", "/roboboat/thrusters/right/thrust"),
-                ("/world/default/model/roboboat/link/base_link/sensor/sensor_gps/navsat", "/roboboat/sensors/gps/navsat"),
-                ("/world/default/model/roboboat/link/base_link/sensor/sensor_imu/imu", "/roboboat/sensors/imu/imu"),
-                ("/world/default/model/roboboat/link/base_link/sensor/sensor_lidar/scan", "/roboboat/sensors/lidar/scan"),
-                ("/world/default/model/roboboat/link/base_link/sensor/sensor_lidar/scan/points", "/roboboat/sensors/lidar/scan/points"),
-                ("/world/default/model/roboboat/link/base_link/sensor/sensor_camera/camera_info", "/roboboat/sensors/camera/camera_info"),
-                ("/world/default/model/roboboat/link/base_link/sensor/sensor_camera/image", "/roboboat/sensors/camera/image"),
-            ],
-            parameters=[{'use_sim_time': True}],
             output='screen'
         ),
     ])

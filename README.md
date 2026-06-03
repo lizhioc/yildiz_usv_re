@@ -1,5 +1,15 @@
 # YILDIZ USV
 
+## Modification Notice
+
+This repository is based on the original YILDIZ USV project:
+https://github.com/YILDIZ-USV/YILDIZ-USV
+
+The current copy keeps the original project structure and license while adding
+local fixes for the Jetson ROS 2 Humble / Gazebo Garden workflow, including
+roboboat model loading, a Gazebo Garden ROS bridge, and simulation launch
+adjustments used for the localization and Navigation2 closed-loop run.
+
 [![Ubuntu](https://img.shields.io/badge/Ubuntu-22.04-blue.svg "Ubuntu 22.04 LTS")](https://releases.ubuntu.com/22.04/)
 [![ROS2](https://img.shields.io/badge/ROS2-Humble-blue.svg "ROS 2 Humble")](https://docs.ros.org/en/humble/)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg "Apache License 2.0")](./LICENSE.txt)

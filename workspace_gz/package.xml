@@ -20,10 +20,11 @@
   <depend>launch</depend>
   <depend>launch_ros</depend>
   <depend>ros_gz_sim</depend>
-  <depend>ros_gz_bridge</depend>
   <depend>robot_state_publisher</depend>
   <depend>joint_state_publisher</depend>
   <depend>xacro</depend>
+  <depend>rclcpp</depend>
+  <depend>rosgraph_msgs</depend>
   <depend>std_msgs</depend>
   <depend>sensor_msgs</depend>
   <depend>resource_retriever</depend>
