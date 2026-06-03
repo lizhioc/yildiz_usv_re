@@ -9,7 +9,10 @@
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Float64
-from pynput.keyboard import Listener
+import select
+import sys
+import termios
+import tty
 
 STARTUP_MSG = "Manual control of the roboboat via the WASD keys has been successfully initiated."
 
@@ -26,11 +29,20 @@ class ThrusterControl(Node):
         
         self.stop_thrusters()
 
-        self.listener = Listener(on_press=self.on_press)
-        self.listener.start()
+        self.terminal_settings = None
+        self.keyboard_enabled = sys.stdin.isatty()
+        if self.keyboard_enabled:
+            self.terminal_settings = termios.tcgetattr(sys.stdin)
+            tty.setcbreak(sys.stdin.fileno())
+            self.create_timer(0.05, self.poll_keyboard)
+        else:
+            self.get_logger().warning(
+                "stdin is not a TTY; manual keyboard control is disabled for this process."
+            )
 
         if not getattr(self, '_startup_message_printed', False):
             print(STARTUP_MSG)
+            print("Controls: W forward, A turn left, D turn right, S stop, Q quit")
             self._startup_message_printed = True
 
     def start_thrusters(self):
@@ -69,26 +81,30 @@ class ThrusterControl(Node):
         
         self.get_logger().info("Turning right.")
 
-    def on_press(self, key):
-        """Keyboard callback mapping keys to control actions."""
-        try:
-            if key.char == 'w':  
-                self.start_thrusters()
-            elif key.char == 's':  
-                self.stop_thrusters()
-            elif key.char == 'a': 
-                self.turn_left()
-            elif key.char == 'd':  
-                self.turn_right()
-        except AttributeError:
-            pass 
+    def poll_keyboard(self):
+        if not self.keyboard_enabled:
+            return
 
-    def stop_listener(self):
-        try:
-            if self.listener and self.listener.running:
-                self.listener.stop()
-        except Exception:
-            pass
+        ready, _, _ = select.select([sys.stdin], [], [], 0)
+        if not ready:
+            return
+
+        key = sys.stdin.read(1).lower()
+        if key == 'w':
+            self.start_thrusters()
+        elif key == 's':
+            self.stop_thrusters()
+        elif key == 'a':
+            self.turn_left()
+        elif key == 'd':
+            self.turn_right()
+        elif key == 'q':
+            self.stop_thrusters()
+            raise KeyboardInterrupt
+
+    def restore_terminal(self):
+        if self.terminal_settings is not None:
+            termios.tcsetattr(sys.stdin, termios.TCSADRAIN, self.terminal_settings)
 
 def main(args=None):
     rclpy.init(args=args)
@@ -98,7 +114,7 @@ def main(args=None):
     except KeyboardInterrupt:
         pass
     finally:
-        node.stop_listener()
+        node.restore_terminal()
         node.destroy_node()
         rclpy.shutdown()
 

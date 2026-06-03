@@ -324,6 +324,7 @@ ros-humble-ros-gzgarden \
 ros-humble-xacro \
 ros-humble-joint-state-publisher \
 ros-humble-robot-localization \
+ros-humble-slam-toolbox \
 ros-humble-nav2-bringup \
 ros-humble-navigation2
 ```
@@ -392,6 +393,12 @@ ros2 launch workspace_gz simulation.launch.py
 ```bash
 ros2 launch workspace_ros localization.launch.py
 ```
+
+For online SLAM mapping, let `slam_toolbox` publish `map -> odom` instead:
+
+```bash
+ros2 launch workspace_ros localization.launch.py publish_map_to_odom:=false
+```
 ---
 ### 3. Bring up Navigation2:
 
@@ -399,13 +406,55 @@ ros2 launch workspace_ros localization.launch.py
 ros2 launch workspace_nav nav2.launch.py
 ```
 ---
-### 4. Run the converter node:
+### 4. Optional: Start online SLAM mapping:
+
+This starts `slam_toolbox` in online mapping mode. It consumes the RoboBoat
+LiDAR scan topic and the EKF odometry TF chain, so it can build a map while the
+boat is driven manually or by Navigation2.
+
+```bash
+ros2 launch workspace_slam slam.launch.py
+```
+
+RViz2 opens by default and visualizes `/map`, `/roboboat/sensors/lidar/scan`,
+TF, the robot model, and filtered odometry. The launch file sets `DISPLAY=:0`
+by default for the Jetson desktop. Use another display if needed:
+
+```bash
+ros2 launch workspace_slam slam.launch.py display:=:1
+```
+
+To run SLAM without RViz:
+
+```bash
+ros2 launch workspace_slam slam.launch.py rviz:=false
+```
+
+Save the current occupancy grid map:
+
+```bash
+mkdir -p ~/yildiz_ws/maps
+ros2 run nav2_map_server map_saver_cli -f ~/yildiz_ws/maps/roboboat_map
+```
+
+The saved output contains `roboboat_map.yaml` and `roboboat_map.pgm`.
+
+---
+### 5. Run the converter node:
 
 ```bash
 ros2 run workspace_ros converter
 ```
+
+For manual driving, run the keyboard controller in an interactive terminal:
+
+```bash
+ros2 run workspace_ros manual_control
+```
+
+Controls: `W` forward, `A` turn left, `D` turn right, `S` stop, `Q` quit.
 ---
-### 5. Run the target_buoy node:
+### 6. Run the target_buoy node:
 
 > **Note:** Before running the `target_buoy` node, the engagement target information must be provided by the [Ground Control Station](https://github.com/YILDIZ-USV/GROUND-CONTROL-STATION.git).
 
@@ -413,7 +462,7 @@ ros2 run workspace_ros converter
 ros2 run workspace_ros target_buoy
 ```
 ---
-### 6. Run the waypoint_transform node:
+### 7. Run the waypoint_transform node:
 
 > **Note:** Before running the `waypoint_transform` node, the mission waypoint latitude and longitude data must be provided by the [Ground Control Station](https://github.com/YILDIZ-USV/GROUND-CONTROL-STATION.git).
 
@@ -421,7 +470,7 @@ ros2 run workspace_ros target_buoy
 ros2 run workspace_nav waypoint_transform
 ```
 ---
-### 7. Run the waypoint_with_state node:
+### 8. Run the waypoint_with_state node:
 
 ```bash
 ros2 run workspace_nav waypoint_with_state

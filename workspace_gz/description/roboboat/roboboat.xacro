@@ -395,7 +395,7 @@
 
     <!-- Definition of the LIDAR sensor -->
     <sensor name="sensor_lidar" type="gpu_ray">
-      <pose>0.2 0.0 0.45 0 0 0</pose>
+      <pose>0 0 0 0 0 0</pose>
       <visualize>true</visualize>
       <update_rate>10</update_rate>
       <ray>

@@ -10,6 +10,9 @@
 
 from launch_ros.actions import Node
 from launch import LaunchDescription
+from launch.actions import DeclareLaunchArgument
+from launch.conditions import IfCondition
+from launch.substitutions import LaunchConfiguration
 from launch.substitutions import PathJoinSubstitution
 from launch_ros.substitutions import FindPackageShare
 
@@ -20,8 +23,14 @@ def generate_launch_description():
     ekf_path = PathJoinSubstitution([package_share, 'config', 'ekf.yaml'])
     navsat_path = PathJoinSubstitution([package_share, 'config', 'navsat.yaml'])
     static_transform_path = PathJoinSubstitution([package_share, 'config', 'static_transform.yaml'])
+    publish_map_to_odom = LaunchConfiguration('publish_map_to_odom')
 
     return LaunchDescription([
+        DeclareLaunchArgument(
+            'publish_map_to_odom',
+            default_value='true',
+            description='Publish a static map->odom transform. Disable this when SLAM publishes map->odom.'
+        ),
 
         Node(
             package=package_name,
@@ -70,6 +79,7 @@ def generate_launch_description():
             package='tf2_ros',
             executable='static_transform_publisher',
             name='map_to_odom_tf',
+            condition=IfCondition(publish_map_to_odom),
             parameters=[{'use_sim_time': True}],
             arguments=[
                '--x', '0.0',
