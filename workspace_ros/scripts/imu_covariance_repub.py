@@ -13,10 +13,10 @@ from sensor_msgs.msg import Imu
 class ImuCovarianceRepub(Node):
     def __init__(self):
         super().__init__('imu_covariance_repub')
-        try:
-            self.declare_parameter('use_sim_time', False)
-        except rclpy.exceptions.ParameterAlreadyDeclaredException:
-            pass
+        self.declare_parameter_if_missing('use_sim_time', False)
+        self.declare_parameter_if_missing('orientation_stddev', 0.01)
+        self.declare_parameter_if_missing('angular_velocity_stddev', 0.0032)
+        self.declare_parameter_if_missing('linear_acceleration_stddev', 0.20)
 
         self.subscription = self.create_subscription(
             Imu,
@@ -30,31 +30,48 @@ class ImuCovarianceRepub(Node):
             10
         )
 
+    def declare_parameter_if_missing(self, name, value):
+        try:
+            self.declare_parameter(name, value)
+        except rclpy.exceptions.ParameterAlreadyDeclaredException:
+            pass
+
     def imu_callback(self, msg):
         msg.header.frame_id = 'imu_link'
+        orientation_var = float(self.get_parameter('orientation_stddev').value) ** 2
+        angular_velocity_var = float(self.get_parameter('angular_velocity_stddev').value) ** 2
+        linear_acceleration_var = float(self.get_parameter('linear_acceleration_stddev').value) ** 2
         msg.orientation_covariance = [
-            0.0025, 0.0, 0.0,
-            0.0, 0.0025, 0.0,
-            0.0, 0.0, 0.0025
+            orientation_var, 0.0, 0.0,
+            0.0, orientation_var, 0.0,
+            0.0, 0.0, orientation_var
         ]
         msg.angular_velocity_covariance = [
-            0.0004, 0.0, 0.0,
-            0.0, 0.0004, 0.0,
-            0.0, 0.0, 0.0004
+            angular_velocity_var, 0.0, 0.0,
+            0.0, angular_velocity_var, 0.0,
+            0.0, 0.0, angular_velocity_var
         ]
         msg.linear_acceleration_covariance = [
-            0.04, 0.0, 0.0,
-            0.0, 0.04, 0.0,
-            0.0, 0.0, 0.04
+            linear_acceleration_var, 0.0, 0.0,
+            0.0, linear_acceleration_var, 0.0,
+            0.0, 0.0, linear_acceleration_var
         ]
         self.publisher.publish(msg)
 
 def main(args=None):
     rclpy.init(args=args)
     node = ImuCovarianceRepub()
-    rclpy.spin(node)
-    node.destroy_node()
-    rclpy.shutdown()
+    try:
+        rclpy.spin(node)
+    except KeyboardInterrupt:
+        pass
+    finally:
+        try:
+            node.destroy_node()
+        except KeyboardInterrupt:
+            pass
+        if rclpy.ok():
+            rclpy.shutdown()
 
 if __name__ == '__main__':
     main()

@@ -13,10 +13,9 @@ from sensor_msgs.msg import NavSatFix
 class GpsCovarianceRepub(Node):
     def __init__(self):
         super().__init__('gps_covariance_repub')
-        try:
-            self.declare_parameter('use_sim_time', False)
-        except rclpy.exceptions.ParameterAlreadyDeclaredException:
-            pass
+        self.declare_parameter_if_missing('use_sim_time', False)
+        self.declare_parameter_if_missing('horizontal_stddev', 0.05)
+        self.declare_parameter_if_missing('vertical_stddev', 0.20)
 
         self.subscription = self.create_subscription(
             NavSatFix,
@@ -30,14 +29,20 @@ class GpsCovarianceRepub(Node):
             10
         )
 
+    def declare_parameter_if_missing(self, name, value):
+        try:
+            self.declare_parameter(name, value)
+        except rclpy.exceptions.ParameterAlreadyDeclaredException:
+            pass
+
     def gps_callback(self, msg):
         msg.header.frame_id = 'gps_link'
-        hdop = 3.0
-        var = (hdop * 1.5) ** 2
+        horizontal_var = float(self.get_parameter('horizontal_stddev').value) ** 2
+        vertical_var = float(self.get_parameter('vertical_stddev').value) ** 2
         msg.position_covariance = [
-            var, 0.0, 0.0,
-            0.0, var, 0.0,
-            0.0, 0.0, var * 4.0
+            horizontal_var, 0.0, 0.0,
+            0.0, horizontal_var, 0.0,
+            0.0, 0.0, vertical_var
         ]
         msg.position_covariance_type = NavSatFix.COVARIANCE_TYPE_APPROXIMATED
         self.publisher.publish(msg)
@@ -45,9 +50,17 @@ class GpsCovarianceRepub(Node):
 def main(args=None):
     rclpy.init(args=args)
     node = GpsCovarianceRepub()
-    rclpy.spin(node)
-    node.destroy_node()
-    rclpy.shutdown()
+    try:
+        rclpy.spin(node)
+    except KeyboardInterrupt:
+        pass
+    finally:
+        try:
+            node.destroy_node()
+        except KeyboardInterrupt:
+            pass
+        if rclpy.ok():
+            rclpy.shutdown()
 
 if __name__ == '__main__':
     main()

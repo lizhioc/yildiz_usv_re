@@ -10,9 +10,10 @@
 
 from launch_ros.descriptions import ParameterValue
 from launch import LaunchDescription
-from launch.actions import ExecuteProcess, SetEnvironmentVariable
+from launch.actions import DeclareLaunchArgument, ExecuteProcess, SetEnvironmentVariable
+from launch.conditions import IfCondition, UnlessCondition
 from launch_ros.actions import Node
-from launch.substitutions import PathJoinSubstitution, Command
+from launch.substitutions import LaunchConfiguration, PathJoinSubstitution, Command
 from launch_ros.substitutions import FindPackageShare, FindPackagePrefix
 
 def generate_launch_description():
@@ -25,6 +26,7 @@ def generate_launch_description():
     world_path = PathJoinSubstitution([package_share, 'worlds', 'world.sdf'])
     model_path = PathJoinSubstitution([package_share, 'models'])
     xacro_path = PathJoinSubstitution([package_share, 'description', 'roboboat', 'roboboat.xacro'])
+    headless = LaunchConfiguration('headless')
 
     robot_description = ParameterValue(
         Command(['xacro ', xacro_path]),
@@ -32,6 +34,11 @@ def generate_launch_description():
     )
 
     return LaunchDescription([
+        DeclareLaunchArgument(
+            'headless',
+            default_value='false',
+            description='Run Gazebo server without the GUI client.'
+        ),
 
         SetEnvironmentVariable(
             name='GZ_SIM_RESOURCE_PATH',
@@ -44,6 +51,13 @@ def generate_launch_description():
 
         ExecuteProcess(
             cmd=['gz', 'sim', '-r', world_path],
+            condition=UnlessCondition(headless),
+            output='screen'
+        ),
+
+        ExecuteProcess(
+            cmd=['gz', 'sim', '-r', '-s', world_path],
+            condition=IfCondition(headless),
             output='screen'
         ),
 

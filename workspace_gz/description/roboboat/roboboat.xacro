@@ -403,13 +403,13 @@
           <horizontal>
             <samples>360</samples>
             <resolution>1</resolution>
-            <min_angle>-3.14</min_angle>
-            <max_angle>3.14</max_angle>
+            <min_angle>-2.35619</min_angle>
+            <max_angle>2.35619</max_angle>
           </horizontal>
         </scan>
         <range>
           <min>0.1</min>
-          <max>30</max>
+          <max>15</max>
         </range>
       </ray>
     </sensor>
@@ -455,6 +455,16 @@
       <fluid_density>1025</fluid_density>
       <propeller_diameter>0.1</propeller_diameter>
       <velocity_control>false</velocity_control>
+    </plugin>
+
+    <plugin
+      filename="gz-sim-odometry-publisher-system"
+      name="gz::sim::systems::OdometryPublisher">
+      <odom_frame>odom</odom_frame>
+      <robot_base_frame>base_link</robot_base_frame>
+      <dimensions>3</dimensions>
+      <odom_publish_frequency>50</odom_publish_frequency>
+      <odom_topic>/model/roboboat/odometry</odom_topic>
     </plugin>
 
     <plugin

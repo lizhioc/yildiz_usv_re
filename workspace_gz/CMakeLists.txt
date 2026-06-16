@@ -46,6 +46,8 @@ find_package(rclcpp REQUIRED)
 
 find_package(rosgraph_msgs REQUIRED)
 
+find_package(nav_msgs REQUIRED)
+
 find_package(sensor_msgs REQUIRED)
 
 find_package(gz-msgs9 REQUIRED)
@@ -186,6 +188,7 @@ target_link_libraries(garden_bridge
 )
 ament_target_dependencies(garden_bridge
   rclcpp
+  nav_msgs
   rosgraph_msgs
   sensor_msgs
   std_msgs
