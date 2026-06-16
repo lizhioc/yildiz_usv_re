@@ -1,0 +1,23 @@
+path_follower:
+  ros__parameters:
+    use_sim_time: true
+    path_topic: /planned_global_path
+    cmd_vel_topic: /cmd_vel_nav
+    lookahead_topic: /path_follower/lookahead_pose
+    base_frame: base_link
+    path_frame: ""
+    default_path_frame: map
+    control_frequency: 5.0
+    lookahead_distance: 2.0
+    goal_tolerance: 0.8
+    min_path_point_distance: 0.05
+    max_linear_speed: 1.2
+    min_linear_speed: 0.15
+    max_angular_speed: 0.5
+    yaw_kp: 0.8
+    rotate_in_place_angle: 1.2
+    slow_down_angle: 0.7
+    slow_down_distance: 3.0
+    tf_timeout: 0.2
+    stop_on_completion: true
+    stop_on_tf_failure: true

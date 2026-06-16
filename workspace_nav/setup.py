@@ -57,6 +57,7 @@ setup(
         'console_scripts': [
             'gps_map_tf = scripts.gps_map_tf:main',
             'global_path_client = scripts.global_path_client:main',
+            'path_follower = scripts.path_follower:main',
             'rviz_goal_planner = scripts.rviz_goal_planner:main',
             'set_initial_pose = scripts.set_initial_pose:main',
             'waypoint_transform = scripts.waypoint_transform:main',
