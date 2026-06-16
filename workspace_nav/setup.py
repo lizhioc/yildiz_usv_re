@@ -21,6 +21,8 @@ config_files = collect_files('config', ['.yaml'])
 launch_files = collect_files('launch', ['.launch.py'])
 script_files = collect_files('scripts', ['.py'])
 map_files = collect_files('map', ['.pgm'])
+saved_map_files = collect_files(os.path.join('..', 'maps'), ['.yaml', '.pgm'])
+rviz_files = collect_files('rviz', ['.rviz'])
 
 data_files = [
     ('share/ament_index/resource_index/packages', [os.path.join('resource', package_name)]),
@@ -35,6 +37,10 @@ if script_files:
     data_files.append((f'share/{package_name}/scripts', script_files))
 if map_files:
     data_files.append((f'share/{package_name}/map', map_files))
+if saved_map_files:
+    data_files.append((f'share/{package_name}/maps', saved_map_files))
+if rviz_files:
+    data_files.append((f'share/{package_name}/rviz', rviz_files))
 
 setup(
     name=package_name,
@@ -49,6 +55,10 @@ setup(
     license='Apache-2.0',
     entry_points={
         'console_scripts': [
+            'gps_map_tf = scripts.gps_map_tf:main',
+            'global_path_client = scripts.global_path_client:main',
+            'rviz_goal_planner = scripts.rviz_goal_planner:main',
+            'set_initial_pose = scripts.set_initial_pose:main',
             'waypoint_transform = scripts.waypoint_transform:main',
             'waypoint_with_state = scripts.waypoint_with_state:main',
         ],

@@ -25,6 +25,12 @@ def generate_launch_description():
     navsat_path = PathJoinSubstitution([package_share, 'config', 'navsat.yaml'])
     static_transform_path = PathJoinSubstitution([package_share, 'config', 'static_transform.yaml'])
     publish_map_to_odom = LaunchConfiguration('publish_map_to_odom')
+    map_to_odom_x = LaunchConfiguration('map_to_odom_x')
+    map_to_odom_y = LaunchConfiguration('map_to_odom_y')
+    map_to_odom_z = LaunchConfiguration('map_to_odom_z')
+    map_to_odom_roll = LaunchConfiguration('map_to_odom_roll')
+    map_to_odom_pitch = LaunchConfiguration('map_to_odom_pitch')
+    map_to_odom_yaw = LaunchConfiguration('map_to_odom_yaw')
     publish_sensor_static_tf = LaunchConfiguration('publish_sensor_static_tf')
     gps_horizontal_stddev = LaunchConfiguration('gps_horizontal_stddev')
     gps_vertical_stddev = LaunchConfiguration('gps_vertical_stddev')
@@ -37,6 +43,36 @@ def generate_launch_description():
             'publish_map_to_odom',
             default_value='false',
             description='Publish a static map->odom transform. Keep false while SLAM or localization publishes map->odom.'
+        ),
+        DeclareLaunchArgument(
+            'map_to_odom_x',
+            default_value='0.0',
+            description='Static map->odom x used only when publish_map_to_odom is true.'
+        ),
+        DeclareLaunchArgument(
+            'map_to_odom_y',
+            default_value='0.0',
+            description='Static map->odom y used only when publish_map_to_odom is true.'
+        ),
+        DeclareLaunchArgument(
+            'map_to_odom_z',
+            default_value='0.0',
+            description='Static map->odom z used only when publish_map_to_odom is true.'
+        ),
+        DeclareLaunchArgument(
+            'map_to_odom_roll',
+            default_value='0.0',
+            description='Static map->odom roll used only when publish_map_to_odom is true.'
+        ),
+        DeclareLaunchArgument(
+            'map_to_odom_pitch',
+            default_value='0.0',
+            description='Static map->odom pitch used only when publish_map_to_odom is true.'
+        ),
+        DeclareLaunchArgument(
+            'map_to_odom_yaw',
+            default_value='0.0',
+            description='Static map->odom yaw used only when publish_map_to_odom is true.'
         ),
         DeclareLaunchArgument(
             'publish_sensor_static_tf',
@@ -133,12 +169,12 @@ def generate_launch_description():
             condition=IfCondition(publish_map_to_odom),
             parameters=[{'use_sim_time': True}],
             arguments=[
-               '--x', '0.0',
-               '--y', '0.0',
-               '--z', '0.0',
-               '--roll', '0.0',
-               '--pitch', '0.0',
-               '--yaw', '0.0',
+               '--x', map_to_odom_x,
+               '--y', map_to_odom_y,
+               '--z', map_to_odom_z,
+               '--roll', map_to_odom_roll,
+               '--pitch', map_to_odom_pitch,
+               '--yaw', map_to_odom_yaw,
                '--frame-id', 'map',
                '--child-frame-id', 'odom'
             ]

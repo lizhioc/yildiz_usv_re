@@ -1,0 +1,23 @@
+gps_map_tf:
+  ros__parameters:
+    use_sim_time: true
+    gps_topic: /gps/fixed_cov
+    odom_topic: /odometry/filtered
+    map_frame: map
+    odom_frame: odom
+
+    # Gazebo world geodetic origin from workspace_gz/worlds/world.sdf.
+    # The saved static map is aligned to the Gazebo ENU/world frame.
+    datum_latitude: 37.210394
+    datum_longitude: 27.579437
+
+    # Rotation from Gazebo ENU/world coordinates into the saved map frame.
+    map_yaw: 0.0
+
+    # GPS antenna offset in base_link, from roboboat.xacro.
+    gps_offset_x: 0.325
+    gps_offset_y: 0.0
+
+    publish_rate: 20.0
+    max_gps_age: 1.0
+    max_odom_age: 1.0

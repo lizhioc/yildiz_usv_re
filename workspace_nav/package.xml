@@ -16,6 +16,7 @@
 
   <buildtool_depend>ament_python</buildtool_depend>
   
+  <depend>ament_index_python</depend>
   <depend>rclpy</depend>
   <depend>launch</depend>
   <depend>launch_ros</depend>
@@ -23,11 +24,19 @@
   <depend>ros_gz_interfaces</depend>
   <depend>rosgraph_msgs</depend>
   <depend>geometry_msgs</depend>
+  <depend>nav2_msgs</depend>
+  <depend>nav_msgs</depend>
+  <depend>action_msgs</depend>
   <depend>sensor_msgs</depend>
   <depend>std_msgs</depend>
   <depend>tf2</depend>
   <depend>tf2_ros</depend>
   <depend>nav2_bringup</depend>
+  <depend>nav2_amcl</depend>
+  <depend>nav2_lifecycle_manager</depend>
+  <depend>nav2_map_server</depend>
+  <depend>nav2_planner</depend>
+  <depend>rviz2</depend>
   
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>
