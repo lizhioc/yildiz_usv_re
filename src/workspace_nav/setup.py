@@ -21,7 +21,8 @@ config_files = collect_files('config', ['.yaml'])
 launch_files = collect_files('launch', ['.launch.py'])
 script_files = collect_files('scripts', ['.py'])
 map_files = collect_files('map', ['.pgm'])
-saved_map_files = collect_files(os.path.join('..', 'maps'), ['.yaml', '.pgm'])
+json_files = collect_files('json', ['.json'])
+saved_map_files = collect_files(os.path.join('..', '..', 'maps'), ['.yaml', '.pgm'])
 rviz_files = collect_files('rviz', ['.rviz'])
 
 data_files = [
@@ -37,6 +38,8 @@ if script_files:
     data_files.append((f'share/{package_name}/scripts', script_files))
 if map_files:
     data_files.append((f'share/{package_name}/map', map_files))
+if json_files:
+    data_files.append((f'share/{package_name}/json', json_files))
 if saved_map_files:
     data_files.append((f'share/{package_name}/maps', saved_map_files))
 if rviz_files:

@@ -40,9 +40,7 @@ def find_workspace_root() -> Optional[Path]:
             if p in checked:
                 continue
             checked.add(p)
-            if (p / 'src' / 'YILDIZ-USV' / 'workspace_nav').is_dir():
-                return p
-            if (p / 'YILDIZ-USV' / 'workspace_nav').is_dir():
+            if (p / 'src' / 'workspace_nav' / 'package.xml').is_file():
                 return p
     return None
 
@@ -60,21 +58,15 @@ def make_target_paths() -> Tuple[Path, Path]:
         pass
     ws_root = find_workspace_root()
     if ws_root is not None:
-        candidate1 = (ws_root / "src" / "YILDIZ-USV" / "workspace_nav" / "json" / TARGET_JSON_FILENAME).resolve()
-        if candidate1.is_file():
-            return candidate1.parent, candidate1
-        candidate2 = (ws_root / "YILDIZ-USV" / "workspace_nav" / "json" / TARGET_JSON_FILENAME).resolve()
-        if candidate2.is_file():
-            return candidate2.parent, candidate2
-        candidate3_dir = (ws_root / "src" / "YILDIZ-USV" / "workspace_nav" / "json").resolve()
-        return candidate3_dir, (candidate3_dir / TARGET_JSON_FILENAME).resolve()
-    fallback = (Path.cwd().resolve() / "src" / "YILDIZ-USV" / "workspace_nav" / "json" / TARGET_JSON_FILENAME).resolve()
-    alt = (Path.cwd().resolve() / "YILDIZ-USV" / "workspace_nav" / "json" / TARGET_JSON_FILENAME).resolve()
-    if fallback.is_file():
+        candidate = (ws_root / "src" / "workspace_nav" / "json" / TARGET_JSON_FILENAME).resolve()
+        return candidate.parent, candidate
+    home_candidate = (Path.home() / "yildiz_usv_re" / "src" / "workspace_nav" / "json" / TARGET_JSON_FILENAME).resolve()
+    if home_candidate.parent.exists():
+        return home_candidate.parent, home_candidate
+    fallback = (Path.cwd().resolve() / "src" / "workspace_nav" / "json" / TARGET_JSON_FILENAME).resolve()
+    if fallback.parent.exists():
         return fallback.parent, fallback
-    if alt.is_file():
-        return alt.parent, alt
-    return fallback.parent, fallback
+    return home_candidate.parent, home_candidate
 
 TARGET_DIR, TARGET_PATH = make_target_paths()
 

@@ -45,9 +45,7 @@ def find_workspace_root() -> Optional[Path]:
             if p in seen:
                 continue
             seen.add(p)
-            if (p / "src" / "YILDIZ-USV").is_dir():
-                return p
-            if (p / "YILDIZ-USV").is_dir():
+            if (p / "src" / "workspace_nav" / "package.xml").is_file():
                 return p
     return None
 
@@ -64,18 +62,11 @@ def make_waypoint_path() -> Path:
         pass
     ws_root = find_workspace_root()
     if ws_root is not None:
-        candidate1 = (ws_root / "src" / "YILDIZ-USV" / "workspace_nav" / "json" / WAYPOINT_FILENAME).resolve()
-        if candidate1.exists():
-            return candidate1
-        candidate2 = (ws_root / "YILDIZ-USV" / "workspace_nav" / "json" / WAYPOINT_FILENAME).resolve()
-        if candidate2.exists():
-            return candidate2
-        candidate3 = (ws_root / "src" / "YILDIZ-USV" / "workspace_nav" / "json" / WAYPOINT_FILENAME).resolve()
-        return candidate3
-    home_candidate = Path.home() / "yildiz_ws" / "src" / "YILDIZ-USV" / "workspace_nav" / "json" / WAYPOINT_FILENAME
+        return (ws_root / "src" / "workspace_nav" / "json" / WAYPOINT_FILENAME).resolve()
+    home_candidate = Path.home() / "yildiz_usv_re" / "src" / "workspace_nav" / "json" / WAYPOINT_FILENAME
     if home_candidate.exists():
         return home_candidate.resolve()
-    default = Path.cwd().resolve() / "src" / "YILDIZ-USV" / "workspace_nav" / "json" / WAYPOINT_FILENAME
+    default = Path.cwd().resolve() / "src" / "workspace_nav" / "json" / WAYPOINT_FILENAME
     return default
 
 def find_kamikaze_script() -> Optional[Path]:
@@ -93,12 +84,9 @@ def find_kamikaze_script() -> Optional[Path]:
         pass
     ws_root = find_workspace_root()
     if ws_root is not None:
-        candidate1 = (ws_root / "src" / "YILDIZ-USV" / "workspace_ros" / "scripts" / "kamikaze.py").resolve()
-        if candidate1.exists():
-            return candidate1
-        candidate2 = (ws_root / "YILDIZ-USV" / "workspace_ros" / "scripts" / "kamikaze.py").resolve()
-        if candidate2.exists():
-            return candidate2
+        candidate = (ws_root / "src" / "workspace_ros" / "scripts" / "kamikaze.py").resolve()
+        if candidate.exists():
+            return candidate
     return None
 
 class SimpleWaypointNavigator(Node):

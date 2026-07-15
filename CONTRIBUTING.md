@@ -41,18 +41,17 @@ Always branch from the latest `develop` (or `main` if `develop` is not used). Ke
 Short instructions for getting started locally:
 
 ```bash
-mkdir -p ~/yildiz_ws/src
-cd ~/yildiz_ws/src
-git clone https://github.com/YILDIZ-USV/YILDIZ-USV.git
+cd ~
+git clone https://github.com/lizhioc/yildiz_usv_re.git
 ```
 
 ```bash
-cd ~/yildiz_ws
+cd ~/yildiz_usv_re
 colcon build --merge-install
 ```
 
 ```bash
-source ~/yildiz_ws/install/setup.bash
+source ~/yildiz_usv_re/install/setup.bash
 ```
 
 Add any environment or dependency notes specific to your machine in the issue or PR.

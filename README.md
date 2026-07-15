@@ -22,249 +22,281 @@ This repository provides a Gazebo Garden-based simulation and ROS 2 Humble toolc
 ```bash
 
 .
+├── .gitignore
 ├── CONTRIBUTING.md
 ├── images
 │   ├── Robot_Localization_and_Navigation2_Image.png
 │   ├── Simulation_Environment_Image.png
 │   └── Targeted_Engagement_Image.png
 ├── LICENSE.txt
+├── maps
+│   ├── roboboat_manual_map_2.pgm
+│   ├── roboboat_manual_map_2.yaml
+│   ├── roboboat_manual_map_2_nav.pgm
+│   └── roboboat_manual_map_2_nav.yaml
 ├── README.md
 ├── requirements.txt
-├── workspace_gz
-│   ├── CMakeLists.txt
-│   ├── description
-│   │   └── roboboat
-│   │       └── roboboat.xacro
-│   ├── launch
-│   │   └── simulation.launch.py
-│   ├── models
-│   │   ├── buoys
-│   │   │   ├── marker_buoy_black
-│   │   │   │   ├── materials
-│   │   │   │   │   └── textures
-│   │   │   │   │       ├── MarkerBuoy_Base_Color.png
-│   │   │   │   │       └── MarkerBuoy_Roughness.png
-│   │   │   │   ├── meshes
-│   │   │   │   │   └── marker_buoy.dae
-│   │   │   │   ├── model.config
-│   │   │   │   └── model.sdf
-│   │   │   ├── marker_buoy_green
-│   │   │   │   ├── materials
-│   │   │   │   │   └── textures
-│   │   │   │   │       ├── MarkerBuoy_Base_Color.png
-│   │   │   │   │       └── MarkerBuoy_Roughness.png
-│   │   │   │   ├── meshes
-│   │   │   │   │   └── marker_buoy.dae
-│   │   │   │   ├── model.config
-│   │   │   │   └── model.sdf
-│   │   │   ├── marker_buoy_orange
-│   │   │   │   ├── materials
-│   │   │   │   │   └── textures
-│   │   │   │   │       ├── MarkerBuoy_Base_Color.png
-│   │   │   │   │       └── MarkerBuoy_Roughness.png
-│   │   │   │   ├── meshes
-│   │   │   │   │   └── marker_buoy.dae
-│   │   │   │   ├── model.config
-│   │   │   │   └── model.sdf
-│   │   │   ├── marker_buoy_red
-│   │   │   │   ├── materials
-│   │   │   │   │   └── textures
-│   │   │   │   │       ├── MarkerBuoy_Base_Color.png
-│   │   │   │   │       └── MarkerBuoy_Roughness.png
-│   │   │   │   ├── meshes
-│   │   │   │   │   └── marker_buoy.dae
-│   │   │   │   ├── model.config
-│   │   │   │   └── model.sdf
-│   │   │   ├── marker_buoy_yellow
-│   │   │   │   ├── materials
-│   │   │   │   │   └── textures
-│   │   │   │   │       ├── MarkerBuoy_Base_Color.png
-│   │   │   │   │       └── MarkerBuoy_Roughness.png
-│   │   │   │   ├── meshes
-│   │   │   │   │   └── marker_buoy.dae
-│   │   │   │   ├── model.config
-│   │   │   │   └── model.sdf
-│   │   │   └── round_buoy_orange
-│   │   │       ├── materials
-│   │   │       │   └── textures
-│   │   │       │       ├── RoundBarrierBuoy_Base_Color.png
-│   │   │       │       └── RoundBarrierBuoy_Roughness.png
-│   │   │       ├── meshes
-│   │   │       │   └── round_buoy.dae
-│   │   │       ├── model.config
-│   │   │       └── model.sdf
-│   │   ├── roboboat
-│   │   │   ├── materials
-│   │   │   │   └── textures
-│   │   │   │       ├── roboboat_albedo.png
-│   │   │   │       ├── roboboat_metalness.png
-│   │   │   │       ├── roboboat_normal.png
-│   │   │   │       ├── roboboat_roughness.png
-│   │   │   │       ├── thruster_albedo.png
-│   │   │   │       └── thruster_roughness.png
-│   │   │   ├── meshes
-│   │   │   │   ├── housing.dae
-│   │   │   │   ├── mount.dae
-│   │   │   │   ├── prop.dae
-│   │   │   │   └── roboboat.dae
-│   │   │   └── sensors
-│   │   │       ├── camera
-│   │   │       │   ├── materials
-│   │   │       │   │   └── textures
-│   │   │       │   │       ├── camera_albedo.png
-│   │   │       │   │       ├── camera_metalness.png
-│   │   │       │   │       ├── camera_normal.png
-│   │   │       │   │       ├── camera.png
-│   │   │       │   │       └── camera_roughness.png
-│   │   │       │   └── meshes
-│   │   │       │       ├── camera_albedo.png
-│   │   │       │       └── camera.dae
-│   │   │       ├── camera_post
-│   │   │       │   ├── materials
-│   │   │       │   │   └── textures
-│   │   │       │   │       └── post_albedo.png
-│   │   │       │   └── meshes
-│   │   │       │       ├── post_albedo.jpg
-│   │   │       │       └── post.dae
-│   │   │       ├── drybox
-│   │   │       │   ├── materials
-│   │   │       │   │   └── textures
-│   │   │       │   │       ├── drybox_albedo.png
-│   │   │       │   │       └── drybox_roughness.png
-│   │   │       │   └── meshes
-│   │   │       │       └── drybox.dae
-│   │   │       ├── gps
-│   │   │       │   ├── materials
-│   │   │       │   │   └── textures
-│   │   │       │   │       └── gps_albedo.png
-│   │   │       │   └── meshes
-│   │   │       │       ├── gps_albedo.png
-│   │   │       │       └── gps.dae
-│   │   │       ├── lidar
-│   │   │       │   ├── materials
-│   │   │       │   │   └── textures
-│   │   │       │   │       ├── lidar_albedo.png
-│   │   │       │   │       ├── lidar_metalness.png
-│   │   │       │   │       ├── lidar_normal.png
-│   │   │       │   │       ├── lidar.png
-│   │   │       │   │       └── lidar_roughness.png
-│   │   │       │   └── meshes
-│   │   │       │       ├── lidar_albedo.png
-│   │   │       │       └── lidar.dae
-│   │   │       └── lidar_post
-│   │   │           ├── materials
-│   │   │           │   └── textures
-│   │   │           │       └── post_albedo.png
-│   │   │           └── meshes
-│   │   │               ├── post_albedo.jpg
-│   │   │               └── post.dae
-│   │   └── waves
-│   │       ├── materials
-│   │       │   ├── programs
-│   │       │   │   ├── GerstnerWaves_fs_330.glsl
-│   │       │   │   └── GerstnerWaves_vs_330.glsl
-│   │       │   └── textures
-│   │       │       ├── skybox_lowres.dds
-│   │       │       └── wave_normals.dds
-│   │       ├── meshes
-│   │       │   └── waterlow.dae
-│   │       ├── model.config
-│   │       └── model.sdf
-│   ├── package.xml
-│   ├── plugins
-│   │   ├── AcousticPerceptionScoringPlugin.cc
-│   │   ├── AcousticPerceptionScoringPlugin.hh
-│   │   ├── AcousticPingerPlugin.cc
-│   │   ├── AcousticPingerPlugin.hh
-│   │   ├── AcousticTrackingScoringPlugin.cc
-│   │   ├── AcousticTrackingScoringPlugin.hh
-│   │   ├── BallShooterPlugin.cc
-│   │   ├── BallShooterPlugin.hh
-│   │   ├── GymkhanaScoringPlugin.cc
-│   │   ├── GymkhanaScoringPlugin.hh
-│   │   ├── LightBuoyPlugin.cc
-│   │   ├── LightBuoyPlugin.hh
-│   │   ├── NavigationScoringPlugin.cc
-│   │   ├── NavigationScoringPlugin.hh
-│   │   ├── PerceptionScoringPlugin.cc
-│   │   ├── PerceptionScoringPlugin.hh
-│   │   ├── PlacardPlugin.cc
-│   │   ├── PlacardPlugin.hh
-│   │   ├── PolyhedraBuoyancyDrag.cc
-│   │   ├── PolyhedraBuoyancyDrag.hh
-│   │   ├── PolyhedronVolume.cc
-│   │   ├── PolyhedronVolume.hh
-│   │   ├── PublisherPlugin.cc
-│   │   ├── PublisherPlugin.hh
-│   │   ├── ScanDockScoringPlugin.cc
-│   │   ├── ScanDockScoringPlugin.hh
-│   │   ├── ScoringPlugin.cc
-│   │   ├── ScoringPlugin.hh
-│   │   ├── ShapeVolume.cc
-│   │   ├── ShapeVolume.hh
-│   │   ├── SimpleHydrodynamics.cc
-│   │   ├── SimpleHydrodynamics.hh
-│   │   ├── StationkeepingScoringPlugin.cc
-│   │   ├── StationkeepingScoringPlugin.hh
-│   │   ├── Surface.cc
-│   │   ├── Surface.hh
-│   │   ├── USVWind.cc
-│   │   ├── USVWind.hh
-│   │   ├── Wavefield.cc
-│   │   ├── Wavefield.hh
-│   │   ├── WaveVisual.cc
-│   │   ├── WaveVisual.hh
-│   │   ├── WayfindingScoringPlugin.cc
-│   │   ├── WayfindingScoringPlugin.hh
-│   │   ├── WaypointMarkers.cc
-│   │   ├── WaypointMarkers.hh
-│   │   ├── WildlifeScoringPlugin.cc
-│   │   └── WildlifeScoringPlugin.hh
-│   └── worlds
-│       └── world.sdf
-├── workspace_nav
-│   ├── config
-│   │   ├── map.yaml
-│   │   └── nav2_params.yaml
-│   ├── json
-│   │   ├── target_buoy.json
-│   │   └── waypoints.json
-│   ├── launch
-│   │   └── nav2.launch.py
-│   ├── map
-│   │   └── map.pgm
-│   ├── package.xml
-│   ├── resource
-│   │   └── workspace_nav
-│   ├── scripts
-│   │   ├── __init__.py
-│   │   ├── waypoint_transform.py
-│   │   └── waypoint_with_state.py
-│   ├── setup.cfg
-│   └── setup.py
-└── workspace_ros
-    ├── config
-    │   ├── ekf.yaml
-    │   ├── navsat.yaml
-    │   └── static_transform.yaml
-    ├── launch
-    │   └── localization.launch.py
-    ├── package.xml
-    ├── resource
-    │   └── workspace_ros
-    ├── scripts
-    │   ├── converter.py
-    │   ├── gps_covariance_repub.py
-    │   ├── imu_covariance_repub.py
-    │   ├── __init__.py
-    │   ├── kamikaze.py
-    │   ├── manual_control.py
-    │   ├── static_transform_publisher.py
-    │   └── target_buoy.py
-    ├── setup.cfg
-    ├── setup.py
-    └── YOLOv11
-        └── YOLOv11.pt
+├── src
+│   ├── workspace_gz
+│   │   ├── CMakeLists.txt
+│   │   ├── description
+│   │   │   └── roboboat
+│   │   │       └── roboboat.xacro
+│   │   ├── launch
+│   │   │   └── simulation.launch.py
+│   │   ├── models
+│   │   │   ├── buoys
+│   │   │   │   ├── marker_buoy_black
+│   │   │   │   │   ├── materials
+│   │   │   │   │   │   └── textures
+│   │   │   │   │   │       ├── MarkerBuoy_Base_Color.png
+│   │   │   │   │   │       └── MarkerBuoy_Roughness.png
+│   │   │   │   │   ├── meshes
+│   │   │   │   │   │   └── marker_buoy.dae
+│   │   │   │   │   ├── model.config
+│   │   │   │   │   └── model.sdf
+│   │   │   │   ├── marker_buoy_green
+│   │   │   │   │   ├── materials
+│   │   │   │   │   │   └── textures
+│   │   │   │   │   │       ├── MarkerBuoy_Base_Color.png
+│   │   │   │   │   │       └── MarkerBuoy_Roughness.png
+│   │   │   │   │   ├── meshes
+│   │   │   │   │   │   └── marker_buoy.dae
+│   │   │   │   │   ├── model.config
+│   │   │   │   │   └── model.sdf
+│   │   │   │   ├── marker_buoy_orange
+│   │   │   │   │   ├── materials
+│   │   │   │   │   │   └── textures
+│   │   │   │   │   │       ├── MarkerBuoy_Base_Color.png
+│   │   │   │   │   │       └── MarkerBuoy_Roughness.png
+│   │   │   │   │   ├── meshes
+│   │   │   │   │   │   └── marker_buoy.dae
+│   │   │   │   │   ├── model.config
+│   │   │   │   │   └── model.sdf
+│   │   │   │   ├── marker_buoy_red
+│   │   │   │   │   ├── materials
+│   │   │   │   │   │   └── textures
+│   │   │   │   │   │       ├── MarkerBuoy_Base_Color.png
+│   │   │   │   │   │       └── MarkerBuoy_Roughness.png
+│   │   │   │   │   ├── meshes
+│   │   │   │   │   │   └── marker_buoy.dae
+│   │   │   │   │   ├── model.config
+│   │   │   │   │   └── model.sdf
+│   │   │   │   ├── marker_buoy_yellow
+│   │   │   │   │   ├── materials
+│   │   │   │   │   │   └── textures
+│   │   │   │   │   │       ├── MarkerBuoy_Base_Color.png
+│   │   │   │   │   │       └── MarkerBuoy_Roughness.png
+│   │   │   │   │   ├── meshes
+│   │   │   │   │   │   └── marker_buoy.dae
+│   │   │   │   │   ├── model.config
+│   │   │   │   │   └── model.sdf
+│   │   │   │   └── round_buoy_orange
+│   │   │   │       ├── materials
+│   │   │   │       │   └── textures
+│   │   │   │       │       ├── RoundBarrierBuoy_Base_Color.png
+│   │   │   │       │       └── RoundBarrierBuoy_Roughness.png
+│   │   │   │       ├── meshes
+│   │   │   │       │   └── round_buoy.dae
+│   │   │   │       ├── model.config
+│   │   │   │       └── model.sdf
+│   │   │   ├── roboboat
+│   │   │   │   ├── materials
+│   │   │   │   │   └── textures
+│   │   │   │   │       ├── roboboat_albedo.png
+│   │   │   │   │       ├── roboboat_metalness.png
+│   │   │   │   │       ├── roboboat_normal.png
+│   │   │   │   │       ├── roboboat_roughness.png
+│   │   │   │   │       ├── thruster_albedo.png
+│   │   │   │   │       └── thruster_roughness.png
+│   │   │   │   ├── meshes
+│   │   │   │   │   ├── housing.dae
+│   │   │   │   │   ├── mount.dae
+│   │   │   │   │   ├── prop.dae
+│   │   │   │   │   └── roboboat.dae
+│   │   │   │   └── sensors
+│   │   │   │       ├── camera
+│   │   │   │       │   ├── materials
+│   │   │   │       │   │   └── textures
+│   │   │   │       │   │       ├── camera_albedo.png
+│   │   │   │       │   │       ├── camera_metalness.png
+│   │   │   │       │   │       ├── camera_normal.png
+│   │   │   │       │   │       ├── camera.png
+│   │   │   │       │   │       └── camera_roughness.png
+│   │   │   │       │   └── meshes
+│   │   │   │       │       ├── camera_albedo.png
+│   │   │   │       │       └── camera.dae
+│   │   │   │       ├── camera_post
+│   │   │   │       │   ├── materials
+│   │   │   │       │   │   └── textures
+│   │   │   │       │   │       └── post_albedo.png
+│   │   │   │       │   └── meshes
+│   │   │   │       │       ├── post_albedo.jpg
+│   │   │   │       │       └── post.dae
+│   │   │   │       ├── drybox
+│   │   │   │       │   ├── materials
+│   │   │   │       │   │   └── textures
+│   │   │   │       │   │       ├── drybox_albedo.png
+│   │   │   │       │   │       └── drybox_roughness.png
+│   │   │   │       │   └── meshes
+│   │   │   │       │       └── drybox.dae
+│   │   │   │       ├── gps
+│   │   │   │       │   ├── materials
+│   │   │   │       │   │   └── textures
+│   │   │   │       │   │       └── gps_albedo.png
+│   │   │   │       │   └── meshes
+│   │   │   │       │       ├── gps_albedo.png
+│   │   │   │       │       └── gps.dae
+│   │   │   │       ├── lidar
+│   │   │   │       │   ├── materials
+│   │   │   │       │   │   └── textures
+│   │   │   │       │   │       ├── lidar_albedo.png
+│   │   │   │       │   │       ├── lidar_metalness.png
+│   │   │   │       │   │       ├── lidar_normal.png
+│   │   │   │       │   │       ├── lidar.png
+│   │   │   │       │   │       └── lidar_roughness.png
+│   │   │   │       │   └── meshes
+│   │   │   │       │       ├── lidar_albedo.png
+│   │   │   │       │       └── lidar.dae
+│   │   │   │       └── lidar_post
+│   │   │   │           ├── materials
+│   │   │   │           │   └── textures
+│   │   │   │           │       └── post_albedo.png
+│   │   │   │           └── meshes
+│   │   │   │               ├── post_albedo.jpg
+│   │   │   │               └── post.dae
+│   │   │   └── waves
+│   │   │       ├── materials
+│   │   │       │   ├── programs
+│   │   │       │   │   ├── GerstnerWaves_fs_330.glsl
+│   │   │       │   │   └── GerstnerWaves_vs_330.glsl
+│   │   │       │   └── textures
+│   │   │       │       ├── skybox_lowres.dds
+│   │   │       │       └── wave_normals.dds
+│   │   │       ├── meshes
+│   │   │       │   └── waterlow.dae
+│   │   │       ├── model.config
+│   │   │       └── model.sdf
+│   │   ├── package.xml
+│   │   ├── plugins
+│   │   │   ├── AcousticPerceptionScoringPlugin.cc
+│   │   │   ├── AcousticPerceptionScoringPlugin.hh
+│   │   │   ├── AcousticPingerPlugin.cc
+│   │   │   ├── AcousticPingerPlugin.hh
+│   │   │   ├── AcousticTrackingScoringPlugin.cc
+│   │   │   ├── AcousticTrackingScoringPlugin.hh
+│   │   │   ├── BallShooterPlugin.cc
+│   │   │   ├── BallShooterPlugin.hh
+│   │   │   ├── GymkhanaScoringPlugin.cc
+│   │   │   ├── GymkhanaScoringPlugin.hh
+│   │   │   ├── LightBuoyPlugin.cc
+│   │   │   ├── LightBuoyPlugin.hh
+│   │   │   ├── NavigationScoringPlugin.cc
+│   │   │   ├── NavigationScoringPlugin.hh
+│   │   │   ├── PerceptionScoringPlugin.cc
+│   │   │   ├── PerceptionScoringPlugin.hh
+│   │   │   ├── PlacardPlugin.cc
+│   │   │   ├── PlacardPlugin.hh
+│   │   │   ├── PolyhedraBuoyancyDrag.cc
+│   │   │   ├── PolyhedraBuoyancyDrag.hh
+│   │   │   ├── PolyhedronVolume.cc
+│   │   │   ├── PolyhedronVolume.hh
+│   │   │   ├── PublisherPlugin.cc
+│   │   │   ├── PublisherPlugin.hh
+│   │   │   ├── ScanDockScoringPlugin.cc
+│   │   │   ├── ScanDockScoringPlugin.hh
+│   │   │   ├── ScoringPlugin.cc
+│   │   │   ├── ScoringPlugin.hh
+│   │   │   ├── ShapeVolume.cc
+│   │   │   ├── ShapeVolume.hh
+│   │   │   ├── SimpleHydrodynamics.cc
+│   │   │   ├── SimpleHydrodynamics.hh
+│   │   │   ├── StationkeepingScoringPlugin.cc
+│   │   │   ├── StationkeepingScoringPlugin.hh
+│   │   │   ├── Surface.cc
+│   │   │   ├── Surface.hh
+│   │   │   ├── USVWind.cc
+│   │   │   ├── USVWind.hh
+│   │   │   ├── Wavefield.cc
+│   │   │   ├── Wavefield.hh
+│   │   │   ├── WaveVisual.cc
+│   │   │   ├── WaveVisual.hh
+│   │   │   ├── WayfindingScoringPlugin.cc
+│   │   │   ├── WayfindingScoringPlugin.hh
+│   │   │   ├── WaypointMarkers.cc
+│   │   │   ├── WaypointMarkers.hh
+│   │   │   ├── WildlifeScoringPlugin.cc
+│   │   │   └── WildlifeScoringPlugin.hh
+│   │   ├── src
+│   │   │   └── garden_bridge.cpp
+│   │   └── worlds
+│   │       └── world.sdf
+│   ├── workspace_nav
+│   │   ├── config
+│   │   │   ├── gps_map_tf.yaml
+│   │   │   ├── map.yaml
+│   │   │   ├── nav2_params.yaml
+│   │   │   └── path_follower.yaml
+│   │   ├── json
+│   │   │   ├── target_buoy.json
+│   │   │   └── waypoints.json
+│   │   ├── launch
+│   │   │   ├── global_planner.launch.py
+│   │   │   ├── nav2.launch.py
+│   │   │   ├── nav_rviz.launch.py
+│   │   │   └── path_follower.launch.py
+│   │   ├── map
+│   │   │   └── map.pgm
+│   │   ├── package.xml
+│   │   ├── resource
+│   │   │   └── workspace_nav
+│   │   ├── rviz
+│   │   │   └── static_navigation.rviz
+│   │   ├── scripts
+│   │   │   ├── __init__.py
+│   │   │   ├── global_path_client.py
+│   │   │   ├── gps_map_tf.py
+│   │   │   ├── path_follower.py
+│   │   │   ├── rviz_goal_planner.py
+│   │   │   ├── set_initial_pose.py
+│   │   │   ├── waypoint_transform.py
+│   │   │   └── waypoint_with_state.py
+│   │   ├── setup.cfg
+│   │   └── setup.py
+│   ├── workspace_ros
+│   │   ├── config
+│   │   │   ├── ekf.yaml
+│   │   │   ├── navsat.yaml
+│   │   │   └── static_transform.yaml
+│   │   ├── launch
+│   │   │   └── localization.launch.py
+│   │   ├── package.xml
+│   │   ├── resource
+│   │   │   └── workspace_ros
+│   │   ├── scripts
+│   │   │   ├── converter.py
+│   │   │   ├── gps_covariance_repub.py
+│   │   │   ├── imu_covariance_repub.py
+│   │   │   ├── __init__.py
+│   │   │   ├── kamikaze.py
+│   │   │   ├── manual_control.py
+│   │   │   ├── static_transform_publisher.py
+│   │   │   └── target_buoy.py
+│   │   ├── setup.cfg
+│   │   ├── setup.py
+│   │   └── YOLOv11
+│   │       └── YOLOv11.pt
+│   └── workspace_slam
+│       ├── CMakeLists.txt
+│       ├── config
+│       │   └── mapper_params_online_async.yaml
+│       ├── launch
+│       │   └── slam.launch.py
+│       ├── package.xml
+│       └── rviz
+│           └── slam_mapping.rviz
+├── 全局路径规划教程.md
+└── 手动建图教程.md
 
 ```
 
@@ -292,7 +324,7 @@ This repository provides a Gazebo Garden-based simulation and ROS 2 Humble toolc
 
 - **Purpose:** Processes camera frames with a YOLO segmentation model to detect the target buoy and generate intercept commands.
 
-- **Target configuration:** The target tag is read from `workspace_nav/json/target_buoy.json`.
+- **Target configuration:** The target tag is read from `src/workspace_nav/json/target_buoy.json`.
 
 - **Inference & selection:** The node performs model inference per frame, selects the highest-confidence detection that matches the configured target, and determines its horizontal column position.
 
@@ -300,7 +332,7 @@ This repository provides a Gazebo Garden-based simulation and ROS 2 Humble toolc
 
 - **Visualization:** Detections, labels and status are rendered in an OpenCV window for debugging and operator feedback.
 
-- **Model lookup:** `workspace_ros/YOLOv11/YOLOv11.pt`.
+- **Model lookup:** `src/workspace_ros/YOLOv11/YOLOv11.pt`.
 
 - **Key topics:** image input `/roboboat/sensors/camera/image`; command output `/cmd_vel_nav`.
 
@@ -329,18 +361,17 @@ ros-humble-nav2-bringup \
 ros-humble-navigation2
 ```
 ---
-### Step 3 — Create a workspace and clone the repository:
+### Step 3 — Clone the workspace repository:
 
 ```bash
-mkdir -p ~/yildiz_ws/src
-cd ~/yildiz_ws/src
-git clone https://github.com/YILDIZ-USV/YILDIZ-USV.git
+cd ~
+git clone https://github.com/lizhioc/yildiz_usv_re.git
 ```
 ---
 ### Step 4 — Install Python dependencies:
 
 ```bash
-cd YILDIZ-USV
+cd ~/yildiz_usv_re
 pip install -r requirements.txt
 ```
 ---
@@ -353,14 +384,14 @@ source /opt/ros/humble/setup.bash
 ### Step 6 — Build the workspace:
 
 ```bash
-cd ~/yildiz_ws
+cd ~/yildiz_usv_re
 colcon build --merge-install
 ```
 ---
 ### Step 7 — Source the workspace:
 
 ```bash
-source ~/yildiz_ws/install/setup.bash
+source ~/yildiz_usv_re/install/setup.bash
 ```
 
 ## QUICKSTART
@@ -379,7 +410,7 @@ Before proceeding, ensure the following are installed and configured:
 
 ```bash
 source /opt/ros/humble/setup.bash
-source ~/yildiz_ws/install/setup.bash
+source ~/yildiz_usv_re/install/setup.bash
 ```
 ---
 ### 1. Start the simulation:
@@ -433,8 +464,8 @@ ros2 launch workspace_slam slam.launch.py rviz:=false
 Save the current occupancy grid map:
 
 ```bash
-mkdir -p ~/yildiz_ws/maps
-ros2 run nav2_map_server map_saver_cli -f ~/yildiz_ws/maps/roboboat_map
+mkdir -p ~/yildiz_usv_re/maps
+ros2 run nav2_map_server map_saver_cli -f ~/yildiz_usv_re/maps/roboboat_map
 ```
 
 The saved output contains `roboboat_map.yaml` and `roboboat_map.pgm`.

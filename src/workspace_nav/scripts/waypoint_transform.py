@@ -40,9 +40,7 @@ def find_workspace_root() -> Optional[Path]:
             if p in seen:
                 continue
             seen.add(p)
-            if (p / "src" / "YILDIZ-USV" / "workspace_nav").is_dir():
-                return p
-            if (p / "YILDIZ-USV" / "workspace_nav").is_dir():
+            if (p / "src" / "workspace_nav" / "package.xml").is_file():
                 return p
     return None
 
@@ -60,22 +58,15 @@ def make_output_paths() -> Tuple[Path, Path]:
         pass
     ws_root = find_workspace_root()
     if ws_root is not None:
-        candidate1 = (ws_root / "src" / "YILDIZ-USV" / "workspace_nav" / "json" / TARGET_FILENAME).resolve()
-        if candidate1.parent.exists():
-            return candidate1.parent, candidate1
-        candidate2 = (ws_root / "YILDIZ-USV" / "workspace_nav" / "json" / TARGET_FILENAME).resolve()
-        if candidate2.parent.exists():
-            return candidate2.parent, candidate2
-        candidate3_dir = (ws_root / "src" / "YILDIZ-USV" / "workspace_nav" / "json").resolve()
-        return candidate3_dir, (candidate3_dir / TARGET_FILENAME).resolve()
-    cwd_candidate = (Path.cwd().resolve() / "src" / "YILDIZ-USV" / "workspace_nav" / "json" / TARGET_FILENAME).resolve()
-    alt_cwd = (Path.cwd().resolve() / "YILDIZ-USV" / "workspace_nav" / "json" / TARGET_FILENAME).resolve()
+        candidate = (ws_root / "src" / "workspace_nav" / "json" / TARGET_FILENAME).resolve()
+        return candidate.parent, candidate
+    home_candidate = (Path.home() / "yildiz_usv_re" / "src" / "workspace_nav" / "json" / TARGET_FILENAME).resolve()
+    if home_candidate.parent.exists():
+        return home_candidate.parent, home_candidate
+    cwd_candidate = (Path.cwd().resolve() / "src" / "workspace_nav" / "json" / TARGET_FILENAME).resolve()
     if cwd_candidate.parent.exists():
         return cwd_candidate.parent, cwd_candidate
-    if alt_cwd.parent.exists():
-        return alt_cwd.parent, alt_cwd
-    fallback_dir = cwd_candidate.parent
-    return fallback_dir, cwd_candidate
+    return home_candidate.parent, home_candidate
 
 OUTPUT_DIR, OUTPUT_PATH = make_output_paths()
 

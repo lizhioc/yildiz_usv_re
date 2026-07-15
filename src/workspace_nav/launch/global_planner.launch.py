@@ -20,7 +20,7 @@ def resolve_default_map(package_name):
     if env_map:
         return str(Path(env_map).expanduser().resolve())
 
-    source_map = Path.home() / 'yildiz_ws' / 'src' / 'YILDIZ-USV' / 'maps' / DEFAULT_MAP_FILENAME
+    source_map = Path.home() / 'yildiz_usv_re' / 'maps' / DEFAULT_MAP_FILENAME
     candidates = [source_map]
 
     try:

@@ -77,14 +77,14 @@ class CameraSubscriber(Node):
                 candidate = os.path.join(cur, "workspace_ros", "YOLOv11", "YOLOv11.pt")
                 if os.path.isfile(candidate):
                     return YOLO(candidate, task="segment")
-                candidate2 = os.path.join(cur, "YILDIZ-USV", "workspace_ros", "YOLOv11", "YOLOv11.pt")
+                candidate2 = os.path.join(cur, "src", "workspace_ros", "YOLOv11", "YOLOv11.pt")
                 if os.path.isfile(candidate2):
                     return YOLO(candidate2, task="segment")
                 parent = os.path.dirname(cur)
                 if parent == cur:
                     break
                 cur = parent
-            fallback = os.path.join(os.getcwd(), "src", "YILDIZ-USV", "workspace_ros", "YOLOv11", "YOLOv11.pt")
+            fallback = os.path.join(os.path.expanduser("~/yildiz_usv_re"), "src", "workspace_ros", "YOLOv11", "YOLOv11.pt")
             if os.path.isfile(fallback):
                 return YOLO(fallback, task="segment")
             self.get_logger().error("YOLO model file not found. Tried env, package share, repo-relative and cwd fallbacks.")
@@ -112,23 +112,17 @@ class CameraSubscriber(Node):
             candidate = os.path.join(cur, "workspace_nav", "json", TARGET_JSON_FILENAME)
             if os.path.isfile(candidate):
                 return candidate
-            candidate2 = os.path.join(cur, "YILDIZ-USV", "workspace_nav", "json", TARGET_JSON_FILENAME)
+            candidate2 = os.path.join(cur, "src", "workspace_nav", "json", TARGET_JSON_FILENAME)
             if os.path.isfile(candidate2):
                 return candidate2
-            candidate3 = os.path.join(cur, "src", "YILDIZ-USV", "workspace_nav", "json", TARGET_JSON_FILENAME)
-            if os.path.isfile(candidate3):
-                return candidate3
             parent = os.path.dirname(cur)
             if parent == cur:
                 break
             cur = parent
-        cwd_candidate = os.path.join(os.getcwd(), "src", "YILDIZ-USV", "workspace_nav", "json", TARGET_JSON_FILENAME)
+        cwd_candidate = os.path.join(os.getcwd(), "src", "workspace_nav", "json", TARGET_JSON_FILENAME)
         if os.path.isfile(cwd_candidate):
             return cwd_candidate
-        alt_cwd = os.path.join(os.getcwd(), "YILDIZ-USV", "workspace_nav", "json", TARGET_JSON_FILENAME)
-        if os.path.isfile(alt_cwd):
-            return alt_cwd
-        return cwd_candidate
+        return os.path.join(os.path.expanduser("~/yildiz_usv_re"), "src", "workspace_nav", "json", TARGET_JSON_FILENAME)
 
     def _read_target_file(self):
         try:
